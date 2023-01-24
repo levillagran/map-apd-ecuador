@@ -1,4 +1,5 @@
-{"data": [{
+export default {
+data: [{
 "type": "FeatureCollection",
 "name": "provinces_ec",
 "features": [
