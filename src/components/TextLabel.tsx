@@ -1,7 +1,7 @@
-import React from "react";
-import type { ComponentProps } from "react";
+import React from 'react';
+import type { ComponentProps } from 'react';
 
-export interface Props extends ComponentProps<"text"> {
+export interface Props extends ComponentProps<'text'> {
   label: string;
 }
 
