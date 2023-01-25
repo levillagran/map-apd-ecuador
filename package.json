@@ -1,6 +1,6 @@
 {
   "name": "map-apd-ecuador",
-  "version": "0.1.0-dev.1.0.4",
+  "version": "0.1.0-dev.1.0.5",
   "license": "MIT",
   "author": "Lenin Villagran",
   "main": "dist/index.js",
@@ -60,7 +60,8 @@
   "dependencies": {
     "d3-geo": "^3.0.1",
     "i": "^0.3.7",
-    "npm": "^9.3.1"
+    "npm": "^9.3.1",
+    "react-path-tooltip": "^1.0.17"
   },
   "peerDependencies": {
     "react": ">=16",

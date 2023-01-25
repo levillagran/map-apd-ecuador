@@ -1,10 +1,12 @@
 import React, { useState, createRef } from "react";
 //import type GeoJSON from "geojson";
 import { geoMercator, geoPath } from "d3-geo";
-import geoData from "./geodata/provinces_ec";
+import geoData from './geodata/provinces_ec.json';
 import type { Props, DataItem } from "./types";
 import Frame from "./components/Frame";
+import Region from "./components/Region";
 import TextLabel from "./components/TextLabel";
+import { drawTooltip } from "./draw";
 /*import {
   defaultColor,
   defaultSize,
@@ -13,10 +15,8 @@ import TextLabel from "./components/TextLabel";
   defaultTooltip,
 } from "./constants";
 import { useWindowWidth, responsify } from "./utils";
-import { drawTooltip } from "./draw";
+
 import Frame from "./components/Frame";
-import Region from "./components/Region";
-import TextLabel from "./components/TextLabel";
 // Import Tooltip from './components/Tooltip';
 
 export type {
@@ -59,7 +59,7 @@ export default function EcMap<T extends number | string>(
   const maxValue = Math.max(...data.map(toValue));
 
   // Build a path & a tooltip for each country
-  const projection = geoMercator();
+  const projection = geoMercator().fitSize([400, 400], null || geoData).precision(100);
   const pathGenerator = geoPath().projection(projection);
 
   /*const onClick = React.useCallback(
@@ -68,13 +68,36 @@ export default function EcMap<T extends number | string>(
     [onClickFunction],
   );*/
 
-  const regions = geoData.data;
+  //const regions = geoData.features;
+
+  const regions = geoData.features.map((feature) => {
+    const triggerRef = createRef<SVGPathElement>();
+
+    const path = (
+      <Region
+        ref={triggerRef}
+        d={pathGenerator(geoData)!}
+        strokeOpacity={0.2}
+        key={"name"}
+      />
+    );
+    const tooltip = drawTooltip(
+      typeof undefined,
+      "black",
+      "white",
+      triggerRef,
+      containerRef,
+    );
+
+    return { path, highlightedTooltip: tooltip };
+  });
+
 
   // Build paths
-  //const regionPaths = regions.map((entry) => entry.path);
+  const regionPaths = regions.map((entry) => entry.path);
 
   // Build tooltips
-  //const regionTooltips = regions.map((entry) => entry.highlightedTooltip);
+  const regionTooltips = regions.map((entry) => entry.highlightedTooltip);
 
   const eventHandlers = {
     onMouseDown(e: React.MouseEvent) {
@@ -99,7 +122,7 @@ export default function EcMap<T extends number | string>(
 
   // Render the SVG
   return (
-    <figure className="worldmap__figure-container" style={{ background : "white" }}>
+    <figure className="worldmap__figure-container" style={{ background: "white" }}>
       {title && (
         <figcaption className="worldmap__figure-caption">{title}</figcaption>
       )}
@@ -110,23 +133,22 @@ export default function EcMap<T extends number | string>(
         {...(false ? eventHandlers : undefined)}>
         {false && <Frame color={"black"} />}
         <g
-          transform={`translate(${translateX}, ${translateY}) scale(${
-            (width / 960) * scale
-          }) translate(0, 240)`}
+          transform={`translate(${translateX}, ${translateY}) scale(${(width / 960) * scale
+            }) translate(0, 240)`}
           style={{ transition: "all 0.2s" }}>
-         
+          {regionPaths}
         </g>
         <g>
           {textLabelFunction(width).map((labelProps) => (
             <TextLabel {...labelProps} key={labelProps.label} />
           ))}
         </g>
-        
+        {regionTooltips}
       </svg>
     </figure>
   );
 }
 
-const regions = geoData.data;
+const regions = geoData.features.map((g) => ({ name: g.properties.name, code: g.properties.code }));
 
 export { EcMap, regions };
