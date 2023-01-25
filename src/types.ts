@@ -29,6 +29,7 @@ export interface CountryContext<T extends string | number = number> {
 export interface Props<T extends string | number = number> {
   data: DataItem<T>[];
   title?: string;
+  styleFunction?: (context: CountryContext<T>) => React.CSSProperties;
   /*valuePrefix?: string;
   valueSuffix?: string;
   color?: string;

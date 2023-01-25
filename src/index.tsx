@@ -7,14 +7,14 @@ import Frame from "./components/Frame";
 import Region from "./components/Region";
 import TextLabel from "./components/TextLabel";
 import { drawTooltip } from "./draw";
-/*import {
+import {
   defaultColor,
   defaultSize,
   heightRatio,
   defaultCountryStyle,
   defaultTooltip,
 } from "./constants";
-import { useWindowWidth, responsify } from "./utils";
+/*import { useWindowWidth, responsify } from "./utils";
 
 import Frame from "./components/Frame";
 // Import Tooltip from './components/Tooltip';
@@ -38,6 +38,7 @@ export default function EcMap<T extends number | string>(
   const {
     data,
     title,
+    styleFunction = defaultCountryStyle("black", 0.2),
     textLabelFunction = () => [],
   } = props;
 
@@ -87,11 +88,13 @@ export default function EcMap<T extends number | string>(
     const path = (
       <Region
         ref={triggerRef}
-        d={pathGenerator(geoData)!}
+        d={pathGenerator(feature)!}
+        style={styleFunction(context)}
         strokeOpacity={0.2}
-        key={"name"}
+        key={feature.properties.name}
       />
     );
+    
     const tooltip = drawTooltip(
       typeof context,
       "yellow",
