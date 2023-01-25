@@ -2,7 +2,7 @@ import React, { useState, createRef } from "react";
 //import type GeoJSON from "geojson";
 import { geoMercator, geoPath } from "d3-geo";
 import geoData from './geodata/provinces_ec.json';
-import type { Props, DataItem } from "./types";
+import type { Props, CountryContext, DataItem } from "./types";
 import Frame from "./components/Frame";
 import Region from "./components/Region";
 import TextLabel from "./components/TextLabel";
@@ -72,6 +72,17 @@ export default function EcMap<T extends number | string>(
 
   const regions = geoData.features.map((feature) => {
     const triggerRef = createRef<SVGPathElement>();
+
+    const context: CountryContext<T> = {
+      countryCode: feature.properties.code,
+      countryValue: countryValueMap[feature.properties.code],
+      countryName: feature.properties.name,
+      color : "#dddddd",
+      minValue,
+      maxValue,
+      prefix: "",
+      suffix: "",
+    };
 
     const path = (
       <Region

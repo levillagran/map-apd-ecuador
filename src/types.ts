@@ -15,8 +15,8 @@ export interface DataItem<T extends string | number = number> {
 
 export type Data<T extends string | number = number> = DataItem<T>[];
 
-/*export interface CountryContext<T extends string | number = number> {
-  countryCode: ISOCode;
+export interface CountryContext<T extends string | number = number> {
+  countryCode: number;
   countryName: string;
   countryValue?: T | undefined;
   color: string;
@@ -24,7 +24,7 @@ export type Data<T extends string | number = number> = DataItem<T>[];
   maxValue: number;
   prefix: string;
   suffix: string;
-}*/
+}
 
 export interface Props<T extends string | number = number> {
   data: DataItem<T>[];
