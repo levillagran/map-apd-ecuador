@@ -59,7 +59,7 @@ export default function EcMap<T extends number | string>(
   const maxValue = Math.max(...data.map(toValue));
 
   // Build a path & a tooltip for each country
-  const projection = geoMercator().fitSize([400, 400], null || geoData).precision(100);
+  const projection = geoMercator().fitSize([400, 400], geoData);
   const pathGenerator = geoPath().projection(projection);
 
   /*const onClick = React.useCallback(
@@ -77,7 +77,7 @@ export default function EcMap<T extends number | string>(
       countryCode: feature.properties.code,
       countryValue: countryValueMap[feature.properties.code],
       countryName: feature.properties.name,
-      color : "#dddddd",
+      color : "red",
       minValue,
       maxValue,
       prefix: "",
@@ -94,7 +94,7 @@ export default function EcMap<T extends number | string>(
     );
     const tooltip = drawTooltip(
       typeof context,
-      "black",
+      "yellow",
       "white",
       triggerRef,
       containerRef,
@@ -133,17 +133,20 @@ export default function EcMap<T extends number | string>(
 
   // Render the SVG
   return (
-    <figure className="worldmap__figure-container" style={{ background: "white" }}>
+    <figure className="worldmap__figure-container" style={{ backgroundColor : "white" }}>
       {title && (
         <figcaption className="worldmap__figure-caption">{title}</figcaption>
       )}
       <svg
         ref={containerRef}
         height={`${height}px`}
-        width={`${width}px`}
-        {...(false ? eventHandlers : undefined)}>
-        {false && <Frame color={"black"} />}
-        <g>
+        width={`${width}px`}>
+        {false && <Frame color={"blue"} />}
+        <g
+          transform={`translate(${translateX}, ${translateY}) scale(${
+            (width / 960) * scale
+          }) translate(0, 240)`}
+          style={{ transition: "all 0.2s" }}>
           {regionPaths}
         </g>
         <g>
