@@ -94,11 +94,11 @@ export default function EcMap<T extends number | string>(
         key={feature.properties.name}
       />
     );
-    
+
     const tooltip = drawTooltip(
-      typeof context,
-      "yellow",
-      "white",
+      feature.properties.name,
+      "#FFFF99",
+      "black",
       triggerRef,
       containerRef,
     );
