@@ -43,7 +43,7 @@ export default function EcMap<T extends number | string>(
   } = props;
 
   // Inits
-  const width = 400;
+  const width = 600;
   const height = 400;
   const [scale, setScale] = useState(1);
   const [translateX, setTranslateX] = useState(0);
@@ -60,7 +60,7 @@ export default function EcMap<T extends number | string>(
   const maxValue = Math.max(...data.map(toValue));
 
   // Build a path & a tooltip for each country
-  const projection = geoMercator().fitSize([400, 400], geoData);
+  const projection = geoMercator().fitSize([800, 800], geoData);
   const pathGenerator = geoPath().projection(projection);
 
   /*const onClick = React.useCallback(
