@@ -1,6 +1,6 @@
 {
   "name": "map-apd-ecuador",
-  "version": "0.1.0-dev.1.0.5",
+  "version": "0.1.0-dev.1.0.6",
   "license": "MIT",
   "author": "Lenin Villagran",
   "main": "dist/index.js",
