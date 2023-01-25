@@ -93,7 +93,7 @@ export default function EcMap<T extends number | string>(
       />
     );
     const tooltip = drawTooltip(
-      typeof undefined,
+      typeof context,
       "black",
       "white",
       triggerRef,
@@ -143,10 +143,7 @@ export default function EcMap<T extends number | string>(
         width={`${width}px`}
         {...(false ? eventHandlers : undefined)}>
         {false && <Frame color={"black"} />}
-        <g
-          transform={`translate(${translateX}, ${translateY}) scale(${(width / 960) * scale
-            }) translate(0, 240)`}
-          style={{ transition: "all 0.2s" }}>
+        <g>
           {regionPaths}
         </g>
         <g>
