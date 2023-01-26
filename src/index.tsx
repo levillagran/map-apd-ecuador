@@ -7,26 +7,7 @@ import Frame from "./components/Frame";
 import Region from "./components/Region";
 import TextLabel from "./components/TextLabel";
 import { drawTooltip } from "./draw";
-import {
-  defaultColor,
-  defaultSize,
-  heightRatio,
-  defaultCountryStyle,
-  defaultTooltip,
-} from "./constants";
-/*import { useWindowWidth, responsify } from "./utils";
-
-import Frame from "./components/Frame";
-// Import Tooltip from './components/Tooltip';
-
-export type {
-  ISOCode,
-  SizeOption,
-  DataItem,
-  Data,
-  CountryContext,
-  Props,
-} from "./types";*/
+import {defaultCountryStyle} from "./constants";
 
 function toValue({ value }: DataItem<string | number>): number {
   return typeof value === "string" ? 0 : value;
@@ -42,7 +23,6 @@ export default function EcMap<T extends number | string>(
     textLabelFunction = () => [],
   } = props;
 
-  // Inits
   const width = 1000;
   const height = 1000;
   const [scale, setScale] = useState(1);
@@ -51,7 +31,6 @@ export default function EcMap<T extends number | string>(
 
   const containerRef = createRef<SVGSVGElement>();
 
-  // Calc min/max values and build country map for direct access
   const countryValueMap = Object.fromEntries(
     data.map(({ province, value }) => [province, value]),
   );
@@ -59,17 +38,9 @@ export default function EcMap<T extends number | string>(
   const minValue = Math.min(...data.map(toValue));
   const maxValue = Math.max(...data.map(toValue));
 
-  // Build a path & a tooltip for each country
+  // Construcción de cada provincia
   const projection = geoMercator().fitSize([1000, 1000], geoData).precision(100);
   const pathGenerator = geoPath().projection(projection);
-
-  /*const onClick = React.useCallback(
-    (context: CountryContext<T>) => (event: React.MouseEvent<SVGElement>) =>
-      onClickFunction?.({ ...context, event }),
-    [onClickFunction],
-  );*/
-
-  //const regions = geoData.features;
 
   const regions = geoData.features.map((feature) => {
     const triggerRef = createRef<SVGPathElement>();
@@ -107,34 +78,13 @@ export default function EcMap<T extends number | string>(
   });
 
 
-  // Build paths
+  // construcción de los paths
   const regionPaths = regions.map((entry) => entry.path);
 
-  // Build tooltips
+  // construcción tooltips
   const regionTooltips = regions.map((entry) => entry.highlightedTooltip);
 
-  const eventHandlers = {
-    onMouseDown(e: React.MouseEvent) {
-      e.preventDefault();
-      e.stopPropagation();
-    },
-    onDoubleClick(e: React.MouseEvent) {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      if (scale === 4) {
-        setTranslateX(0);
-        setTranslateY(0);
-        setScale(1);
-      } else {
-        setTranslateX(2 * translateX - x);
-        setTranslateY(2 * translateY - y);
-        setScale(scale * 2);
-      }
-    },
-  };
-
-  // Render the SVG
+  // Renderizacion del SVG
   return (
     <figure className="worldmap__figure-container" style={{ backgroundColor : "white" }}>
       {title && (
